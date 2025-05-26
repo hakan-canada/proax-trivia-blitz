@@ -2,16 +2,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play, Settings } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 interface WelcomeScreenProps {
   onStartTrivia: () => void;
-  onOpenAdmin: () => void;
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
-  onStartTrivia,
-  onOpenAdmin
+  onStartTrivia
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
@@ -53,19 +51,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             <Play className="mr-3 h-6 w-6" />
             Start Trivia
           </Button>
-
-          {/* Hidden admin button - click on logo 5 times to reveal */}
-          <div className="pt-8">
-            <Button
-              onClick={onOpenAdmin}
-              variant="ghost"
-              size="sm"
-              className="opacity-20 hover:opacity-60 transition-opacity"
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              Admin
-            </Button>
-          </div>
         </div>
       </Card>
     </div>

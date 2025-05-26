@@ -18,7 +18,7 @@ export const EducationalSlide: React.FC<EducationalSlideProps> = ({
       <Card className="w-full max-w-4xl p-6 md:p-8 shadow-2xl animate-fade-in">
         <div className="text-center mb-6">
           <h2 className="text-2xl md:text-3xl font-bold text-proax-navy mb-2">
-            Learn More About Proax
+            En savoir plus
           </h2>
           <p className="text-gray-600">
             Take a moment to explore this information before the next question

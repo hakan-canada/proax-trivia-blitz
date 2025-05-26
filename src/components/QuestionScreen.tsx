@@ -11,13 +11,15 @@ interface QuestionScreenProps {
   questionNumber: number;
   totalQuestions: number;
   onAnswer: (answer: string, isCorrect: boolean) => void;
+  onShowConfetti?: () => void;
 }
 
 export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   question,
   questionNumber,
   totalQuestions,
-  onAnswer
+  onAnswer,
+  onShowConfetti
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
@@ -87,6 +89,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     setIsCorrect(correct);
     setShowFeedback(true);
     setIsTimerActive(false);
+
+    // Trigger confetti immediately for correct answers
+    if (correct && onShowConfetti) {
+      onShowConfetti();
+    }
 
     // Clear timer
     if (timerRef.current) {
@@ -158,7 +165,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         {showEducationalSlide && question.imageSlideBefore ? (
           <div className="text-center mb-8 animate-fade-in">
             <h3 className="text-xl font-bold text-proax-navy mb-4">
-              Learn More About Proax
+              En savoir plus
             </h3>
             <div className="flex justify-center mb-6">
               <img

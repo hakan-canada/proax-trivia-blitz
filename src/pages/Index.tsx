@@ -5,10 +5,9 @@ import { UserInfoForm } from '@/components/UserInfoForm';
 import { QuestionScreen } from '@/components/QuestionScreen';
 import { WebsiteBonusScreen } from '@/components/WebsiteBonusScreen';
 import { ResultsScreen } from '@/components/ResultsScreen';
-import { AdminPanel } from '@/components/AdminPanel';
 import { Confetti } from '@/components/Confetti';
 import { UserInfo, GameState, Question, AppConfig } from '@/types/trivia';
-import { getQuestions, setQuestions, addToLeaderboard, getConfig, setConfig } from '@/utils/storage';
+import { getQuestions, addToLeaderboard, getConfig } from '@/utils/storage';
 import { useToast } from '@/hooks/use-toast';
 
 type AppScreen = 
@@ -16,8 +15,7 @@ type AppScreen =
   | 'userInfo'
   | 'question'
   | 'websiteBonus'
-  | 'results'
-  | 'admin';
+  | 'results';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('welcome');
@@ -51,10 +49,6 @@ const Index = () => {
   const handleQuestionAnswer = (answer: string, isCorrect: boolean) => {
     const currentQuestion = questions[gameState.currentQuestionIndex];
     const points = isCorrect ? currentQuestion.points : 0;
-    
-    if (isCorrect) {
-      setShowConfetti(true);
-    }
 
     setGameState(prev => ({
       ...prev,
@@ -119,26 +113,8 @@ const Index = () => {
     });
   };
 
-  const handleOpenAdmin = () => {
-    setCurrentScreen('admin');
-  };
-
-  const handleSaveQuestions = (newQuestions: Question[]) => {
-    setQuestions(newQuestions);
-    setQuestionsState(newQuestions);
-    toast({
-      title: "Questions Updated",
-      description: "Questions have been saved successfully.",
-    });
-  };
-
-  const handleSaveConfig = (newConfig: AppConfig) => {
-    setConfig(newConfig);
-    setConfigState(newConfig);
-    toast({
-      title: "Configuration Updated", 
-      description: "Configuration has been saved successfully.",
-    });
+  const handleShowConfetti = () => {
+    setShowConfetti(true);
   };
 
   const renderCurrentScreen = () => {
@@ -147,7 +123,6 @@ const Index = () => {
         return (
           <WelcomeScreen
             onStartTrivia={handleStartTrivia}
-            onOpenAdmin={handleOpenAdmin}
           />
         );
 
@@ -183,6 +158,7 @@ const Index = () => {
             questionNumber={gameState.currentQuestionIndex + 1}
             totalQuestions={questions.length}
             onAnswer={handleQuestionAnswer}
+            onShowConfetti={handleShowConfetti}
           />
         );
 
@@ -209,19 +185,8 @@ const Index = () => {
           <div>Error: User info not found</div>
         );
 
-      case 'admin':
-        return (
-          <AdminPanel
-            questions={questions}
-            config={config}
-            onSaveQuestions={handleSaveQuestions}
-            onSaveConfig={handleSaveConfig}
-            onBack={() => setCurrentScreen('welcome')}
-          />
-        );
-
       default:
-        return <WelcomeScreen onStartTrivia={handleStartTrivia} onOpenAdmin={handleOpenAdmin} />;
+        return <WelcomeScreen onStartTrivia={handleStartTrivia} />;
     }
   };
 
