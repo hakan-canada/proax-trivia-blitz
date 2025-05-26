@@ -2,17 +2,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Trophy, Play, Settings } from 'lucide-react';
+import { Play, Settings } from 'lucide-react';
 
 interface WelcomeScreenProps {
   onStartTrivia: () => void;
-  onViewLeaderboard: () => void;
   onOpenAdmin: () => void;
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onStartTrivia,
-  onViewLeaderboard,
   onOpenAdmin
 }) => {
   return (
@@ -54,16 +52,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           >
             <Play className="mr-3 h-6 w-6" />
             Start Trivia
-          </Button>
-
-          <Button
-            onClick={onViewLeaderboard}
-            variant="outline"
-            size="lg"
-            className="w-full max-w-sm h-14 text-lg font-medium border-2 border-proax-primary text-proax-primary hover:bg-proax-primary hover:text-white transition-all duration-300"
-          >
-            <Trophy className="mr-3 h-5 w-5" />
-            View Leaderboard
           </Button>
 
           {/* Hidden admin button - click on logo 5 times to reveal */}

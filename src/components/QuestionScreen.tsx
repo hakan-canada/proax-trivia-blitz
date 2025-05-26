@@ -131,10 +131,12 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     return "bg-gray-200 text-gray-500 border-gray-300";
   };
 
+  const progressPercentage = ((15 - timeLeft) / 15) * 100;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-4xl p-6 md:p-8 shadow-2xl animate-fade-in">
-        {/* Progress Bar Section */}
+        {/* Timer Progress Bar Section */}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-proax-primary">
@@ -145,13 +147,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               {timeLeft}s • {question.points} points
             </span>
           </div>
-          {/* Overall Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-gradient-to-r from-proax-primary to-proax-blue h-2 rounded-full transition-all duration-500"
-              style={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
-            />
-          </div>
+          {/* Timer Progress Bar */}
+          <Progress 
+            value={progressPercentage} 
+            className="h-3"
+          />
         </div>
 
         {/* Question or Educational Slide */}

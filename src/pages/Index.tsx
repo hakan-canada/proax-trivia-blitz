@@ -1,25 +1,22 @@
+
 import React, { useState, useEffect } from 'react';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UserInfoForm } from '@/components/UserInfoForm';
-import { EducationalSlide } from '@/components/EducationalSlide';
 import { QuestionScreen } from '@/components/QuestionScreen';
 import { WebsiteBonusScreen } from '@/components/WebsiteBonusScreen';
 import { ResultsScreen } from '@/components/ResultsScreen';
-import { Leaderboard } from '@/components/Leaderboard';
 import { AdminPanel } from '@/components/AdminPanel';
 import { Confetti } from '@/components/Confetti';
 import { UserInfo, GameState, Question, AppConfig } from '@/types/trivia';
-import { getQuestions, setQuestions, getLeaderboard, addToLeaderboard, getConfig, setConfig } from '@/utils/storage';
+import { getQuestions, setQuestions, addToLeaderboard, getConfig, setConfig } from '@/utils/storage';
 import { useToast } from '@/hooks/use-toast';
 
 type AppScreen = 
   | 'welcome'
   | 'userInfo'
-  | 'educationalSlide'
   | 'question'
   | 'websiteBonus'
   | 'results'
-  | 'leaderboard'
   | 'admin';
 
 const Index = () => {
@@ -122,10 +119,6 @@ const Index = () => {
     });
   };
 
-  const handleViewLeaderboard = () => {
-    setCurrentScreen('leaderboard');
-  };
-
   const handleOpenAdmin = () => {
     setCurrentScreen('admin');
   };
@@ -154,7 +147,6 @@ const Index = () => {
         return (
           <WelcomeScreen
             onStartTrivia={handleStartTrivia}
-            onViewLeaderboard={handleViewLeaderboard}
             onOpenAdmin={handleOpenAdmin}
           />
         );
@@ -164,15 +156,6 @@ const Index = () => {
           <UserInfoForm
             onSubmit={handleUserInfoSubmit}
             onBack={() => setCurrentScreen('welcome')}
-          />
-        );
-
-      case 'educationalSlide':
-        const currentQuestion = questions[gameState.currentQuestionIndex];
-        return (
-          <EducationalSlide
-            imageUrl={currentQuestion.imageSlideBefore!}
-            onContinue={handleEducationalSlideComplete}
           />
         );
 
@@ -226,14 +209,6 @@ const Index = () => {
           <div>Error: User info not found</div>
         );
 
-      case 'leaderboard':
-        return (
-          <Leaderboard
-            entries={getLeaderboard()}
-            onBack={() => setCurrentScreen('welcome')}
-          />
-        );
-
       case 'admin':
         return (
           <AdminPanel
@@ -246,7 +221,7 @@ const Index = () => {
         );
 
       default:
-        return <WelcomeScreen onStartTrivia={handleStartTrivia} onViewLeaderboard={handleViewLeaderboard} onOpenAdmin={handleOpenAdmin} />;
+        return <WelcomeScreen onStartTrivia={handleStartTrivia} onOpenAdmin={handleOpenAdmin} />;
     }
   };
 
