@@ -1,4 +1,5 @@
 
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -38,6 +39,17 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
   // Reset state when question changes
   useEffect(() => {
+    console.log('QuestionScreen: New question loaded', {
+      questionNumber,
+      questionId: question.id,
+      questionType: question.questionType,
+      hasOptions: !!question.options,
+      optionsLength: question.options?.length,
+      hasOptionsFr: !!question.optionsFr,
+      optionsFrLength: question.optionsFr?.length,
+      language
+    });
+    
     setSelectedAnswer('');
     setShowFeedback(false);
     setIsCorrect(false);
@@ -48,7 +60,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
-  }, [questionNumber]);
+  }, [questionNumber, question.id]);
 
   // Timer countdown effect
   useEffect(() => {
@@ -92,6 +104,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback || !isTimerActive) return;
     
+    console.log('Answer selected:', answer);
+    
     setSelectedAnswer(answer);
     const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
     const correct = answer === correctAnswer;
@@ -127,9 +141,19 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
   const getAnswerOptions = () => {
     if (question.questionType === 'yesno') {
-      return language === 'fr' ? ['Oui', 'Non'] : ['Yes', 'No'];
+      const yesNoOptions = language === 'fr' ? ['Oui', 'Non'] : ['Yes', 'No'];
+      console.log('YesNo options:', yesNoOptions);
+      return yesNoOptions;
     }
-    return language === 'fr' && question.optionsFr ? question.optionsFr : (question.options || []);
+    
+    const options = language === 'fr' && question.optionsFr ? question.optionsFr : (question.options || []);
+    console.log('Multiple choice options:', {
+      language,
+      hasOptionsFr: !!question.optionsFr,
+      hasOptions: !!question.options,
+      finalOptions: options
+    });
+    return options;
   };
 
   const getButtonStyle = (option: string) => {
@@ -155,6 +179,14 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const progressPercentage = ((15 - timeLeft) / 15) * 100;
   const currentQuestionText = language === 'fr' && question.questionTextFr ? question.questionTextFr : question.questionText;
   const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+  const answerOptions = getAnswerOptions();
+
+  console.log('QuestionScreen render state:', {
+    showEducationalSlide,
+    showFeedback,
+    answerOptionsLength: answerOptions.length,
+    questionNumber
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
@@ -202,10 +234,10 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Answer Options - Hidden when educational slide is shown */}
-        {!showEducationalSlide && (
+        {/* Answer Options - Only hidden when educational slide is shown AND feedback is already shown */}
+        {!(showEducationalSlide && showFeedback) && answerOptions.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-            {getAnswerOptions().map((option, index) => (
+            {answerOptions.map((option, index) => (
               <Button
                 key={index}
                 onClick={() => handleAnswerSelect(option)}
@@ -216,6 +248,17 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                 <span className="text-center w-full">{option}</span>
               </Button>
             ))}
+          </div>
+        )}
+
+        {/* Debug info for missing answers */}
+        {answerOptions.length === 0 && !showEducationalSlide && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <strong>Debug:</strong> No answer options available for this question.
+            <br />Question Type: {question.questionType}
+            <br />Has Options: {question.options ? 'Yes' : 'No'}
+            <br />Has French Options: {question.optionsFr ? 'Yes' : 'No'}
+            <br />Language: {language}
           </div>
         )}
 
@@ -261,3 +304,4 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     </div>
   );
 };
+
