@@ -28,11 +28,11 @@ const defaultQuestions: Question[] = [
   },
   {
     id: '3',
-    questionText: 'What does the Remlive RL-24i device help improve?',
+    questionText: "Which of the following are part of Proax's Custom Enclosure Services?",
     questionType: 'multiple',
-    options: ['Speed of Ethernet communication', 'Safety during lockout/tagout procedures', 'Cost of enclosure assembly', 'Humidity resistance'],
-    correctAnswer: 'Safety during lockout/tagout procedures',
-    points: 10,
+    options: ['Precision drilling, tapping, and milling', 'Custom cutouts for plates, doors, and housing', 'Pre-assembly with accessories', 'All of the above'],
+    correctAnswer: 'All of the above',
+    points: 15,
     imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/remlive.png'
   },
   {
