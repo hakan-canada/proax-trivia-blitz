@@ -1,5 +1,4 @@
 
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -209,8 +208,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           />
         </div>
 
-        {/* Question or Educational Slide */}
-        {showEducationalSlide && question.imageSlideBefore ? (
+        {/* Question or Educational Slide - Only show educational slide when feedback is shown AND showEducationalSlide is true */}
+        {showFeedback && showEducationalSlide && question.imageSlideBefore ? (
           <div className="text-center mb-8 animate-fade-in">
             <h3 className="text-xl font-bold text-proax-navy mb-4">
               {t.common.learnMore}
@@ -234,8 +233,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Answer Options - Only hidden when educational slide is shown AND feedback is already shown */}
-        {!(showEducationalSlide && showFeedback) && answerOptions.length > 0 && (
+        {/* Answer Options - Hide only when educational slide is being displayed */}
+        {!(showFeedback && showEducationalSlide) && answerOptions.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
             {answerOptions.map((option, index) => (
               <Button
@@ -252,7 +251,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         )}
 
         {/* Debug info for missing answers */}
-        {answerOptions.length === 0 && !showEducationalSlide && (
+        {answerOptions.length === 0 && !(showFeedback && showEducationalSlide) && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <strong>Debug:</strong> No answer options available for this question.
             <br />Question Type: {question.questionType}
@@ -262,7 +261,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Feedback */}
+        {/* Feedback - Only show when feedback is true but educational slide is not yet shown */}
         {showFeedback && !showEducationalSlide && (
           <div className="text-center mb-8 animate-bounce-in">
             {isCorrect ? (
@@ -304,4 +303,3 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     </div>
   );
 };
-
