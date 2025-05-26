@@ -30,7 +30,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [question.id]);
+  }, [questionNumber]);
 
   // Reset state when question changes
   useEffect(() => {
@@ -39,8 +39,9 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     setIsCorrect(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
-  }, [question.id]);
+  }, [questionNumber]);
 
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback) return;
