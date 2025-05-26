@@ -2,20 +2,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play } from 'lucide-react';
-import { translations } from '@/utils/translations';
+import { Globe } from 'lucide-react';
 
-interface WelcomeScreenProps {
-  onStartTrivia: () => void;
-  language: 'en' | 'fr';
+interface LanguageSelectorProps {
+  onLanguageSelect: (language: 'en' | 'fr') => void;
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
-  onStartTrivia,
-  language
+export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
+  onLanguageSelect
 }) => {
-  const t = translations[language];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl p-8 md:p-12 text-center shadow-2xl animate-fade-in">
@@ -36,25 +31,29 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               <span className="text-white font-bold text-3xl">PROAX</span>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-proax-navy mb-4">
-            {t.welcome.title}
-          </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-proax-primary mb-2">
-            {t.welcome.subtitle}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-md mx-auto">
-            {t.welcome.description}
-          </p>
+          <div className="flex items-center justify-center mb-6">
+            <Globe className="mr-3 h-8 w-8 text-proax-primary" />
+            <h1 className="text-3xl md:text-4xl font-bold text-proax-navy">
+              Choose Your Language / Choisissez votre langue
+            </h1>
+          </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Button
-            onClick={onStartTrivia}
+            onClick={() => onLanguageSelect('en')}
             size="lg"
-            className="w-full max-w-sm h-16 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="h-20 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
-            <Play className="mr-3 h-6 w-6" />
-            {t.welcome.startTrivia}
+            🇨🇦 English
+          </Button>
+          
+          <Button
+            onClick={() => onLanguageSelect('fr')}
+            size="lg"
+            className="h-20 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            🇫🇷 Français
           </Button>
         </div>
       </Card>

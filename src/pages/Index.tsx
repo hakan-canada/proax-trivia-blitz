@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UserInfoForm } from '@/components/UserInfoForm';
 import { QuestionScreen } from '@/components/QuestionScreen';
@@ -11,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 
 type AppScreen = 
+  | 'language'
   | 'welcome'
   | 'userInfo'
   | 'question'
@@ -18,7 +21,7 @@ type AppScreen =
   | 'results';
 
 const Index = () => {
-  const [currentScreen, setCurrentScreen] = useState<AppScreen>('welcome');
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('language');
   const [questions, setQuestionsState] = useState<Question[]>([]);
   const [config, setConfigState] = useState<AppConfig>({ bonusPoints: 25 });
   const [gameState, setGameState] = useState<GameState>({
@@ -27,7 +30,8 @@ const Index = () => {
     answers: [],
     userInfo: null,
     isComplete: false,
-    hasProaxAccount: null
+    hasProaxAccount: null,
+    language: 'en'
   });
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
@@ -40,6 +44,11 @@ const Index = () => {
     setQuestionsState(getQuestions());
     setConfigState(getConfig());
   }, []);
+
+  const handleLanguageSelect = (language: 'en' | 'fr') => {
+    setGameState(prev => ({ ...prev, language }));
+    setCurrentScreen('welcome');
+  };
 
   const handleStartTrivia = () => {
     setCurrentScreen('userInfo');
@@ -77,6 +86,11 @@ const Index = () => {
     }
   };
 
+  const handleFinishQuiz = () => {
+    // Stop music when finishing quiz
+    stopMusic();
+  };
+
   const handleWebsiteBonusAnswer = (hasAccount: boolean) => {
     setGameState(prev => ({ 
       ...prev, 
@@ -110,14 +124,15 @@ const Index = () => {
   const handleBackToHome = () => {
     // Stop music when going back to home
     stopMusic();
-    setCurrentScreen('welcome');
+    setCurrentScreen('language');
     setGameState({
       currentQuestionIndex: 0,
       score: 0,
       answers: [],
       userInfo: null,
       isComplete: false,
-      hasProaxAccount: null
+      hasProaxAccount: null,
+      language: 'en'
     });
   };
 
@@ -127,10 +142,18 @@ const Index = () => {
 
   const renderCurrentScreen = () => {
     switch (currentScreen) {
+      case 'language':
+        return (
+          <LanguageSelector
+            onLanguageSelect={handleLanguageSelect}
+          />
+        );
+
       case 'welcome':
         return (
           <WelcomeScreen
             onStartTrivia={handleStartTrivia}
+            language={gameState.language}
           />
         );
 
@@ -139,6 +162,7 @@ const Index = () => {
           <UserInfoForm
             onSubmit={handleUserInfoSubmit}
             onBack={() => setCurrentScreen('welcome')}
+            language={gameState.language}
           />
         );
 
@@ -165,8 +189,10 @@ const Index = () => {
             question={questions[gameState.currentQuestionIndex]}
             questionNumber={gameState.currentQuestionIndex + 1}
             totalQuestions={questions.length}
+            language={gameState.language}
             onAnswer={handleQuestionAnswer}
             onShowConfetti={handleShowConfetti}
+            onFinishQuiz={handleFinishQuiz}
           />
         );
 
@@ -174,6 +200,7 @@ const Index = () => {
         return (
           <WebsiteBonusScreen
             bonusPoints={config.bonusPoints}
+            language={gameState.language}
             onAnswer={handleWebsiteBonusAnswer}
           />
         );
@@ -185,6 +212,7 @@ const Index = () => {
             userInfo={gameState.userInfo}
             hasProaxAccount={gameState.hasProaxAccount || false}
             bonusPoints={config.bonusPoints}
+            language={gameState.language}
             onEnterGrandPrize={handleEnterGrandPrize}
             onVisitWebsite={handleVisitWebsite}
             onBackToHome={handleBackToHome}
@@ -194,7 +222,7 @@ const Index = () => {
         );
 
       default:
-        return <WelcomeScreen onStartTrivia={handleStartTrivia} />;
+        return <LanguageSelector onLanguageSelect={handleLanguageSelect} />;
     }
   };
 

@@ -5,21 +5,26 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Question } from '@/types/trivia';
 import { CheckCircle, XCircle, Clock, ArrowRight } from 'lucide-react';
+import { translations } from '@/utils/translations';
 
 interface QuestionScreenProps {
   question: Question;
   questionNumber: number;
   totalQuestions: number;
+  language: 'en' | 'fr';
   onAnswer: (answer: string, isCorrect: boolean) => void;
   onShowConfetti?: () => void;
+  onFinishQuiz?: () => void;
 }
 
 export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   question,
   questionNumber,
   totalQuestions,
+  language,
   onAnswer,
-  onShowConfetti
+  onShowConfetti,
+  onFinishQuiz
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
@@ -28,6 +33,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [showEducationalSlide, setShowEducationalSlide] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const t = translations[language];
 
   // Reset state when question changes
   useEffect(() => {
@@ -68,7 +75,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
   const handleTimeUp = () => {
     if (!showFeedback) {
-      const correct = selectedAnswer === question.correctAnswer;
+      const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+      const correct = selectedAnswer === correctAnswer;
       setIsCorrect(correct);
       setShowFeedback(true);
       
@@ -85,7 +93,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     if (showFeedback || !isTimerActive) return;
     
     setSelectedAnswer(answer);
-    const correct = answer === question.correctAnswer;
+    const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+    const correct = answer === correctAnswer;
     setIsCorrect(correct);
     setShowFeedback(true);
     setIsTimerActive(false);
@@ -109,14 +118,18 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   };
 
   const handleNextQuestion = () => {
+    // Stop music before finishing quiz
+    if (questionNumber === totalQuestions && onFinishQuiz) {
+      onFinishQuiz();
+    }
     onAnswer(selectedAnswer, isCorrect);
   };
 
   const getAnswerOptions = () => {
     if (question.questionType === 'yesno') {
-      return ['Yes', 'No'];
+      return language === 'fr' ? ['Oui', 'Non'] : ['Yes', 'No'];
     }
-    return question.options || [];
+    return language === 'fr' && question.optionsFr ? question.optionsFr : (question.options || []);
   };
 
   const getButtonStyle = (option: string) => {
@@ -127,11 +140,12 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       return "bg-white hover:bg-proax-bg border-2 border-proax-primary text-proax-primary hover:text-proax-blue transition-all duration-200 transform hover:scale-105";
     }
     
-    if (option === question.correctAnswer) {
+    const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+    if (option === correctAnswer) {
       return "bg-green-500 text-white border-green-500";
     }
     
-    if (option === selectedAnswer && option !== question.correctAnswer) {
+    if (option === selectedAnswer && option !== correctAnswer) {
       return "bg-red-500 text-white border-red-500";
     }
     
@@ -139,6 +153,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   };
 
   const progressPercentage = ((15 - timeLeft) / 15) * 100;
+  const currentQuestionText = language === 'fr' && question.questionTextFr ? question.questionTextFr : question.questionText;
+  const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
@@ -147,11 +163,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-proax-primary">
-              Question {questionNumber} of {totalQuestions}
+              {t.common.question} {questionNumber} {t.common.of} {totalQuestions}
             </span>
             <span className="text-sm font-medium text-gray-600 flex items-center">
               <Clock className="mr-1 h-4 w-4" />
-              {timeLeft}s • {question.points} points
+              {timeLeft}{t.common.timeLeft} • {question.points} {t.common.points}
             </span>
           </div>
           {/* Timer Progress Bar */}
@@ -165,7 +181,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         {showEducationalSlide && question.imageSlideBefore ? (
           <div className="text-center mb-8 animate-fade-in">
             <h3 className="text-xl font-bold text-proax-navy mb-4">
-              En savoir plus
+              {t.common.learnMore}
             </h3>
             <div className="flex justify-center mb-6">
               <img
@@ -181,7 +197,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         ) : (
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-proax-navy mb-4">
-              {question.questionText}
+              {currentQuestionText}
             </h2>
           </div>
         )}
@@ -209,8 +225,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               <div className="flex items-center justify-center text-green-600 mb-4">
                 <CheckCircle className="mr-3 h-12 w-12" />
                 <div>
-                  <h3 className="text-2xl font-bold">Correct!</h3>
-                  <p className="text-lg">+{question.points} points</p>
+                  <h3 className="text-2xl font-bold">{t.common.correct}</h3>
+                  <p className="text-lg">+{question.points} {t.common.points}</p>
                 </div>
               </div>
             ) : (
@@ -218,9 +234,9 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                 <XCircle className="mr-3 h-12 w-12" />
                 <div>
                   <h3 className="text-2xl font-bold">
-                    {timeLeft === 0 ? 'Time\'s up!' : 'Not quite!'}
+                    {timeLeft === 0 ? t.common.timeUp : t.common.incorrect}
                   </h3>
-                  <p className="text-lg">The correct answer was: {question.correctAnswer}</p>
+                  <p className="text-lg">{t.common.correctAnswerWas} {correctAnswer}</p>
                 </div>
               </div>
             )}
@@ -235,7 +251,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               size="lg"
               className="h-14 px-8 text-lg font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300"
             >
-              {questionNumber === totalQuestions ? 'Finish Quiz' : 'Next Question'}
+              {questionNumber === totalQuestions ? t.common.finishQuiz : t.common.nextQuestion}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
