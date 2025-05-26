@@ -54,6 +54,10 @@ const Index = () => {
     setCurrentScreen('userInfo');
   };
 
+  const handleBackToLanguage = () => {
+    setCurrentScreen('language');
+  };
+
   const handleUserInfoSubmit = (userInfo: UserInfo) => {
     setGameState(prev => ({ ...prev, userInfo }));
     setCurrentScreen('question');
@@ -153,6 +157,7 @@ const Index = () => {
         return (
           <WelcomeScreen
             onStartTrivia={handleStartTrivia}
+            onBack={handleBackToLanguage}
             language={gameState.language}
           />
         );

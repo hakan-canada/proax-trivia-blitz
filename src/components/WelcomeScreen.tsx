@@ -2,16 +2,18 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play } from 'lucide-react';
+import { Play, ArrowLeft } from 'lucide-react';
 import { translations } from '@/utils/translations';
 
 interface WelcomeScreenProps {
   onStartTrivia: () => void;
+  onBack: () => void;
   language: 'en' | 'fr';
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onStartTrivia,
+  onBack,
   language
 }) => {
   const t = translations[language];
@@ -19,6 +21,19 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl p-8 md:p-12 text-center shadow-2xl animate-fade-in">
+        {/* Back button */}
+        <div className="flex justify-start mb-4">
+          <Button
+            onClick={onBack}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t.common.back}
+          </Button>
+        </div>
+
         {/* Proax Logo */}
         <div className="mb-8">
           <div className="w-48 h-32 mx-auto mb-6 flex items-center justify-center">
