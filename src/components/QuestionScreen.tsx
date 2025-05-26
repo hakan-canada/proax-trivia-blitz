@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -79,11 +80,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       setIsCorrect(correct);
       setShowFeedback(true);
       
-      // Show educational slide after a brief delay if there's an image
+      // Show educational slide after feedback is shown and there's an image
       if (question.imageSlideBefore) {
         setTimeout(() => {
           setShowEducationalSlide(true);
-        }, 1000);
+        }, 2000);
       }
     }
   };
@@ -108,11 +109,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       clearInterval(timerRef.current);
     }
 
-    // Show educational slide after a brief delay if there's an image
+    // Show educational slide after feedback is shown and there's an image
     if (question.imageSlideBefore) {
       setTimeout(() => {
         setShowEducationalSlide(true);
-      }, 1000);
+      }, 2000);
     }
   };
 
