@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -196,7 +195,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         ) : (
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-proax-navy mb-4">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-proax-navy mb-4 leading-tight px-2">
               {currentQuestionText}
             </h2>
           </div>
@@ -204,15 +203,16 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
         {/* Answer Options - Hidden when educational slide is shown */}
         {!showEducationalSlide && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
             {getAnswerOptions().map((option, index) => (
               <Button
                 key={index}
                 onClick={() => handleAnswerSelect(option)}
                 disabled={showFeedback || !isTimerActive}
-                className={`h-16 md:h-20 text-lg md:text-xl font-semibold ${getButtonStyle(option)}`}
+                className={`min-h-16 md:min-h-20 p-4 text-base md:text-lg lg:text-xl font-semibold leading-tight break-words whitespace-normal ${getButtonStyle(option)}`}
+                style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
               >
-                {option}
+                <span className="text-center w-full">{option}</span>
               </Button>
             ))}
           </div>
@@ -236,7 +236,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                   <h3 className="text-2xl font-bold">
                     {timeLeft === 0 ? t.common.timeUp : t.common.incorrect}
                   </h3>
-                  <p className="text-lg">{t.common.correctAnswerWas} {correctAnswer}</p>
+                  <p className="text-lg break-words">{t.common.correctAnswerWas} {correctAnswer}</p>
                 </div>
               </div>
             )}

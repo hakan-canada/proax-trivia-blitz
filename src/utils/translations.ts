@@ -40,7 +40,15 @@ export const translations: Record<'en' | 'fr', Translations> = {
       points: 'bonus points',
       question: 'Answer honestly to earn bonus points:',
       yes: 'Yes',
-      no: 'No'
+      no: 'No',
+      joinProax: 'Join Proax.ca Today!',
+      registerMessage: 'Create your free account to access exclusive content, technical resources, and special offers.',
+      registerNow: 'Register now and earn',
+      toward: 'toward the grand prize!',
+      scanQr: 'Scan QR Code or Click Button',
+      registerButton: 'Register at Proax.ca',
+      opensNewTab: 'Opens in a new tab',
+      continueWithout: 'Continue Without Registering'
     },
     results: {
       congratulations: 'Congratulations',
@@ -98,7 +106,15 @@ export const translations: Record<'en' | 'fr', Translations> = {
       points: 'points bonus',
       question: 'Répondez honnêtement pour gagner des points bonus:',
       yes: 'Oui',
-      no: 'Non'
+      no: 'Non',
+      joinProax: 'Rejoignez Proax.ca dès aujourd\'hui!',
+      registerMessage: 'Créez votre compte gratuit pour accéder au contenu exclusif, aux ressources techniques et aux offres spéciales.',
+      registerNow: 'Inscrivez-vous maintenant et gagnez',
+      toward: 'pour le grand prix!',
+      scanQr: 'Scannez le code QR ou cliquez sur le bouton',
+      registerButton: 'S\'inscrire sur Proax.ca',
+      opensNewTab: 'S\'ouvre dans un nouvel onglet',
+      continueWithout: 'Continuer sans s\'inscrire'
     },
     results: {
       congratulations: 'Félicitations',

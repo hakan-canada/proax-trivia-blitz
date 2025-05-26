@@ -14,10 +14,10 @@ const defaultQuestions: Question[] = [
     questionText: "What is Proax's new campaign name?",
     questionTextFr: "Quel est le nom de la nouvelle campagne de Proax?",
     questionType: 'multiple',
-    options: ['Power to the Panel', 'Industry First', 'Boots on the Ground', 'Smart Automation'],
-    optionsFr: ['Power to the Panel', 'Industry First', 'Boots on the Ground', 'Smart Automation'],
-    correctAnswer: 'Boots on the Ground',
-    correctAnswerFr: 'Boots on the Ground',
+    options: ['Power to the Panel', 'Industry First', 'Présent sur le Terrain', 'Smart Automation'],
+    optionsFr: ['Power to the Panel', 'Industry First', 'Présent sur le Terrain', 'Smart Automation'],
+    correctAnswer: 'Présent sur le Terrain',
+    correctAnswerFr: 'Présent sur le Terrain',
     points: 20,
     imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/boots-on-the-ground-french.png'
   },
@@ -103,7 +103,7 @@ const defaultQuestions: Question[] = [
   {
     id: '9',
     questionText: 'How many PROOF OF CONCEPT CENTERS does Proax operate?',
-    questionTextFr: 'Combien de CENTRES DE PREUVE DE CONCEPT Proax exploite-t-elle?',
+    questionTextFr: 'Combien de centres de preuve de concept Proax exploite-t-elle?',
     questionType: 'multiple',
     options: ['3', '4', '6', '8'],
     optionsFr: ['3', '4', '6', '8'],
@@ -114,7 +114,7 @@ const defaultQuestions: Question[] = [
   {
     id: '10',
     questionText: 'How many DESIGN & BUILD SHOPS does Proax have?',
-    questionTextFr: 'Combien d\'ATELIERS DE CONCEPTION ET CONSTRUCTION Proax a-t-elle?',
+    questionTextFr: 'Combien d\'ateliers de conception et de montage Proax a-t-elle?',
     questionType: 'multiple',
     options: ['2', '4', '6', '8'],
     optionsFr: ['2', '4', '6', '8'],

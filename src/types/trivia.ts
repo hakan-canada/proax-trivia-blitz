@@ -77,6 +77,14 @@ export interface Translations {
     question: string;
     yes: string;
     no: string;
+    joinProax: string;
+    registerMessage: string;
+    registerNow: string;
+    toward: string;
+    scanQr: string;
+    registerButton: string;
+    opensNewTab: string;
+    continueWithout: string;
   };
   results: {
     congratulations: string;
