@@ -70,10 +70,12 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       setIsCorrect(correct);
       setShowFeedback(true);
       
-      // Show educational slide after a brief delay
-      setTimeout(() => {
-        setShowEducationalSlide(true);
-      }, 1000);
+      // Show educational slide after a brief delay if there's an image
+      if (question.imageSlideBefore) {
+        setTimeout(() => {
+          setShowEducationalSlide(true);
+        }, 1000);
+      }
     }
   };
 
@@ -91,10 +93,12 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       clearInterval(timerRef.current);
     }
 
-    // Show educational slide after a brief delay
-    setTimeout(() => {
-      setShowEducationalSlide(true);
-    }, 1000);
+    // Show educational slide after a brief delay if there's an image
+    if (question.imageSlideBefore) {
+      setTimeout(() => {
+        setShowEducationalSlide(true);
+      }, 1000);
+    }
   };
 
   const handleNextQuestion = () => {
@@ -132,7 +136,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-4xl p-6 md:p-8 shadow-2xl animate-fade-in">
-        {/* Timer Progress Bar */}
+        {/* Single Progress Bar Section */}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-proax-primary">
@@ -143,10 +147,12 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               {timeLeft}s • {question.points} points
             </span>
           </div>
+          {/* Timer Progress Bar */}
           <Progress 
             value={progressPercentage} 
             className="h-3 mb-2"
           />
+          {/* Overall Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className="bg-gradient-to-r from-proax-primary to-proax-blue h-2 rounded-full transition-all duration-500"
@@ -155,29 +161,49 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         </div>
 
-        {/* Question */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-proax-navy mb-4">
-            {question.questionText}
-          </h2>
-        </div>
+        {/* Question or Educational Slide */}
+        {showEducationalSlide && question.imageSlideBefore ? (
+          <div className="text-center mb-8 animate-fade-in">
+            <h3 className="text-xl font-bold text-proax-navy mb-4">
+              Learn More About Proax
+            </h3>
+            <div className="flex justify-center mb-6">
+              <img
+                src={question.imageSlideBefore}
+                alt="Educational content"
+                className="max-w-full max-h-96 object-contain rounded-lg shadow-lg"
+                onError={(e) => {
+                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+';
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-proax-navy mb-4">
+              {question.questionText}
+            </h2>
+          </div>
+        )}
 
-        {/* Answer Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {getAnswerOptions().map((option, index) => (
-            <Button
-              key={index}
-              onClick={() => handleAnswerSelect(option)}
-              disabled={showFeedback || !isTimerActive}
-              className={`h-16 md:h-20 text-lg md:text-xl font-semibold ${getButtonStyle(option)}`}
-            >
-              {option}
-            </Button>
-          ))}
-        </div>
+        {/* Answer Options - Hidden when educational slide is shown */}
+        {!showEducationalSlide && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {getAnswerOptions().map((option, index) => (
+              <Button
+                key={index}
+                onClick={() => handleAnswerSelect(option)}
+                disabled={showFeedback || !isTimerActive}
+                className={`h-16 md:h-20 text-lg md:text-xl font-semibold ${getButtonStyle(option)}`}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        )}
 
         {/* Feedback */}
-        {showFeedback && (
+        {showFeedback && !showEducationalSlide && (
           <div className="text-center mb-8 animate-bounce-in">
             {isCorrect ? (
               <div className="flex items-center justify-center text-green-600 mb-4">
@@ -201,41 +227,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Educational Slide */}
-        {showEducationalSlide && question.imageSlideBefore && (
-          <div className="mb-8 animate-fade-in">
-            <h3 className="text-xl font-bold text-proax-navy mb-4 text-center">
-              Learn More About Proax
-            </h3>
-            <div className="flex justify-center mb-6">
-              <img
-                src={question.imageSlideBefore}
-                alt="Educational content"
-                className="max-w-full max-h-96 object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+';
-                }}
-              />
-            </div>
-          </div>
-        )}
-
         {/* Next Question Button */}
-        {showEducationalSlide && (
-          <div className="text-center">
-            <Button
-              onClick={handleNextQuestion}
-              size="lg"
-              className="h-14 px-8 text-lg font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300"
-            >
-              {questionNumber === totalQuestions ? 'Finish Quiz' : 'Next Question'}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </div>
-        )}
-
-        {/* Next Question Button for questions without educational slides */}
-        {showFeedback && !question.imageSlideBefore && (
+        {showFeedback && (
           <div className="text-center">
             <Button
               onClick={handleNextQuestion}
