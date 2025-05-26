@@ -18,10 +18,22 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-proax-bg to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl p-8 md:p-12 text-center shadow-2xl animate-fade-in">
-        {/* Logo placeholder - replace with actual Proax logo */}
+        {/* Proax Logo */}
         <div className="mb-8">
-          <div className="w-32 h-32 mx-auto bg-gradient-to-br from-proax-primary to-proax-blue rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-            <span className="text-white font-bold text-3xl">PROAX</span>
+          <div className="w-48 h-32 mx-auto mb-6 flex items-center justify-center">
+            <img
+              src="https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/Email%20logo-1.png"
+              alt="Proax Logo"
+              className="max-w-full max-h-full object-contain"
+              onError={(e) => {
+                // Fallback to text logo if image fails to load
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            <div className="hidden w-32 h-32 bg-gradient-to-br from-proax-primary to-proax-blue rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-3xl">PROAX</span>
+            </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-proax-navy mb-4">
             Laval Open House

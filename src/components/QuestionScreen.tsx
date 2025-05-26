@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Question } from '@/types/trivia';
@@ -21,6 +21,26 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Clear any existing timeout when component unmounts or question changes
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [question.id]);
+
+  // Reset state when question changes
+  useEffect(() => {
+    setSelectedAnswer('');
+    setShowFeedback(false);
+    setIsCorrect(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }, [question.id]);
 
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback) return;
@@ -30,8 +50,13 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     setIsCorrect(correct);
     setShowFeedback(true);
 
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     // Auto-advance after 2 seconds
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       onAnswer(answer, correct);
     }, 2000);
   };
