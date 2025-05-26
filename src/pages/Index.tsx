@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UserInfoForm } from '@/components/UserInfoForm';
@@ -154,11 +153,19 @@ const Index = () => {
   const handleSaveQuestions = (newQuestions: Question[]) => {
     setQuestions(newQuestions);
     setQuestionsState(newQuestions);
+    toast({
+      title: "Questions Updated",
+      description: "Questions have been saved successfully.",
+    });
   };
 
   const handleSaveConfig = (newConfig: AppConfig) => {
     setConfig(newConfig);
     setConfigState(newConfig);
+    toast({
+      title: "Configuration Updated", 
+      description: "Configuration has been saved successfully.",
+    });
   };
 
   const renderCurrentScreen = () => {
