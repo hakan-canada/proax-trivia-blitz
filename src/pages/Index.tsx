@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { UserInfoForm } from '@/components/UserInfoForm';
@@ -9,6 +8,7 @@ import { Confetti } from '@/components/Confetti';
 import { UserInfo, GameState, Question, AppConfig } from '@/types/trivia';
 import { getQuestions, addToLeaderboard, getConfig } from '@/utils/storage';
 import { useToast } from '@/hooks/use-toast';
+import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 
 type AppScreen = 
   | 'welcome'
@@ -31,6 +31,10 @@ const Index = () => {
   });
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
+
+  // Background music should play during question screens and website bonus
+  const shouldPlayMusic = currentScreen === 'question' || currentScreen === 'websiteBonus';
+  const { stopMusic } = useBackgroundMusic(shouldPlayMusic);
 
   useEffect(() => {
     setQuestionsState(getQuestions());
@@ -79,6 +83,8 @@ const Index = () => {
       hasProaxAccount: hasAccount,
       isComplete: true 
     }));
+    // Stop music when moving to results
+    stopMusic();
     setCurrentScreen('results');
   };
 
@@ -102,6 +108,8 @@ const Index = () => {
   };
 
   const handleBackToHome = () => {
+    // Stop music when going back to home
+    stopMusic();
     setCurrentScreen('welcome');
     setGameState({
       currentQuestionIndex: 0,
