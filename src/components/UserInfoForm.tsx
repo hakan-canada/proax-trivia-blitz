@@ -6,13 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UserInfo } from '@/types/trivia';
 import { ArrowLeft, User, Building, Mail } from 'lucide-react';
+import { translations } from '@/utils/translations';
 
 interface UserInfoFormProps {
   onSubmit: (userInfo: UserInfo) => void;
   onBack: () => void;
+  language: 'en' | 'fr';
 }
 
-export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) => {
+export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack, language }) => {
+  const t = translations[language];
+  
   const [formData, setFormData] = useState<UserInfo>({
     firstName: '',
     companyName: '',
@@ -64,15 +68,15 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
           className="mb-6 text-proax-primary hover:text-proax-blue"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
+          {t.userInfo.back}
         </Button>
 
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-proax-navy mb-4">
-            Welcome to the Challenge!
+            {t.userInfo.title}
           </h1>
           <p className="text-lg text-gray-600">
-            Please provide your information to get started
+            {t.welcome.description}
           </p>
         </div>
 
@@ -80,7 +84,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
           <div className="space-y-2">
             <Label htmlFor="firstName" className="text-lg font-medium flex items-center">
               <User className="mr-2 h-5 w-5 text-proax-primary" />
-              First Name *
+              {t.userInfo.firstName} *
             </Label>
             <Input
               id="firstName"
@@ -88,7 +92,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
               value={formData.firstName}
               onChange={(e) => handleChange('firstName', e.target.value)}
               className={`h-14 text-lg ${errors.firstName ? 'border-red-500' : ''}`}
-              placeholder="Enter your first name"
+              placeholder={t.userInfo.firstNamePlaceholder}
             />
             {errors.firstName && (
               <p className="text-red-500 text-sm">{errors.firstName}</p>
@@ -98,7 +102,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
           <div className="space-y-2">
             <Label htmlFor="companyName" className="text-lg font-medium flex items-center">
               <Building className="mr-2 h-5 w-5 text-proax-primary" />
-              Company Name *
+              {t.userInfo.companyName} *
             </Label>
             <Input
               id="companyName"
@@ -106,7 +110,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
               value={formData.companyName}
               onChange={(e) => handleChange('companyName', e.target.value)}
               className={`h-14 text-lg ${errors.companyName ? 'border-red-500' : ''}`}
-              placeholder="Enter your company name"
+              placeholder={t.userInfo.companyPlaceholder}
             />
             {errors.companyName && (
               <p className="text-red-500 text-sm">{errors.companyName}</p>
@@ -116,7 +120,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-lg font-medium flex items-center">
               <Mail className="mr-2 h-5 w-5 text-proax-primary" />
-              Email Address *
+              {t.userInfo.email} *
             </Label>
             <Input
               id="email"
@@ -124,7 +128,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               className={`h-14 text-lg ${errors.email ? 'border-red-500' : ''}`}
-              placeholder="Enter your email address"
+              placeholder={t.userInfo.emailPlaceholder}
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email}</p>
@@ -136,7 +140,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ onSubmit, onBack }) 
             size="lg"
             className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300"
           >
-            Continue to Trivia
+            {t.userInfo.continue}
           </Button>
         </form>
       </Card>

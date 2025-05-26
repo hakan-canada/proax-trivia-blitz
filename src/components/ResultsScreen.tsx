@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { UserInfo } from '@/types/trivia';
 import { Trophy, Award, ExternalLink, Gift, Star } from 'lucide-react';
+import { translations } from '@/utils/translations';
 
 interface ResultsScreenProps {
   score: number;
   userInfo: UserInfo;
   hasProaxAccount: boolean;
   bonusPoints: number;
+  language: 'en' | 'fr';
   onEnterGrandPrize: () => void;
   onVisitWebsite: () => void;
   onBackToHome: () => void;
@@ -20,17 +22,19 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   userInfo,
   hasProaxAccount,
   bonusPoints,
+  language,
   onEnterGrandPrize,
   onVisitWebsite,
   onBackToHome
 }) => {
+  const t = translations[language];
   const totalScore = score + (hasProaxAccount ? bonusPoints : 0);
 
   const getScoreMessage = () => {
-    if (totalScore >= 80) return "Outstanding! You're a Proax expert! 🏆";
-    if (totalScore >= 60) return "Great job! You know your Proax products! 🌟";
-    if (totalScore >= 40) return "Good work! Keep learning about Proax! 👏";
-    return "Thanks for playing! Discover more at proax.ca! 💡";
+    if (totalScore >= 80) return t.results.excellent;
+    if (totalScore >= 60) return t.results.great;
+    if (totalScore >= 40) return t.results.good;
+    return t.results.thanks;
   };
 
   const getScoreColor = () => {
@@ -46,15 +50,15 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         <div className="text-center mb-8">
           <Trophy className={`mx-auto h-20 w-20 mb-4 ${getScoreColor()}`} />
           <h1 className="text-4xl md:text-5xl font-bold text-proax-navy mb-4">
-            Congratulations, {userInfo.firstName}!
+            {t.results.congratulations}, {userInfo.firstName}!
           </h1>
           <div className="bg-gradient-to-r from-proax-primary to-proax-blue rounded-2xl p-6 mb-6 text-white">
             <div className="text-6xl md:text-7xl font-bold mb-2">{totalScore}</div>
-            <div className="text-xl font-semibold">POINTS</div>
+            <div className="text-xl font-semibold">{t.results.points}</div>
             {hasProaxAccount && (
               <div className="mt-2 text-lg">
                 <Star className="inline mr-1" />
-                Includes {bonusPoints} Proax.ca bonus points!
+                {t.results.includes} {bonusPoints} {t.results.bonusPoints}
               </div>
             )}
           </div>
@@ -67,14 +71,14 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-8">
           <div className="flex items-center justify-center mb-3">
             <Gift className="h-8 w-8 text-yellow-600 mr-2" />
-            <h3 className="text-2xl font-bold text-yellow-800">Prize Information</h3>
+            <h3 className="text-2xl font-bold text-yellow-800">{t.results.prizeInfo}</h3>
           </div>
           <p className="text-lg text-yellow-800 text-center">
-            🎁 Check the prize table at the booth to see what you're eligible for!
+            {t.results.prizeDescription}
           </p>
           {!hasProaxAccount && (
             <p className="text-md text-yellow-700 text-center mt-2">
-              💡 Register on proax.ca to earn extra points toward the big prize!
+              {t.results.registerHint}
             </p>
           )}
         </div>
@@ -88,7 +92,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
               className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-500 hover:to-red-500 transition-all duration-300 transform hover:scale-105"
             >
               <Award className="mr-3 h-6 w-6" />
-              Enter Grand Prize Draw
+              {t.results.grandPrize}
             </Button>
           )}
 
@@ -99,7 +103,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
             className="w-full h-14 text-lg font-semibold border-2 border-proax-primary text-proax-primary hover:bg-proax-primary hover:text-white transition-all duration-300"
           >
             <ExternalLink className="mr-3 h-5 w-5" />
-            Visit Proax.ca
+            {t.results.visitWebsite}
           </Button>
 
           <Button
@@ -108,14 +112,14 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
             variant="ghost"
             className="w-full h-12 text-lg text-proax-primary hover:text-proax-blue transition-all duration-300"
           >
-            Back to Home
+            {t.common.backToHome}
           </Button>
         </div>
 
         {/* Company Information */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Thank you for visiting Proax at the Laval Open House!</p>
-          <p className="mt-1">Company: {userInfo.companyName}</p>
+          <p>{t.results.thankYou}</p>
+          <p className="mt-1">{t.results.company} {userInfo.companyName}</p>
         </div>
       </Card>
     </div>

@@ -4,16 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { QRCodeComponent } from './QRCode';
 import { ExternalLink, Gift, Globe } from 'lucide-react';
+import { translations } from '@/utils/translations';
 
 interface WebsiteBonusScreenProps {
   bonusPoints: number;
+  language: 'en' | 'fr';
   onAnswer: (hasAccount: boolean) => void;
 }
 
 export const WebsiteBonusScreen: React.FC<WebsiteBonusScreenProps> = ({
   bonusPoints,
+  language,
   onAnswer
 }) => {
+  const t = translations[language];
   const [showRegisterPrompt, setShowRegisterPrompt] = useState(false);
 
   const handleAccountAnswer = (hasAccount: boolean) => {
@@ -42,7 +46,7 @@ export const WebsiteBonusScreen: React.FC<WebsiteBonusScreenProps> = ({
             </p>
             <div className="bg-proax-bg rounded-lg p-6 mb-6">
               <p className="text-xl font-semibold text-proax-primary">
-                🎁 Register now and earn <span className="text-proax-blue">{bonusPoints} bonus points</span> toward the grand prize!
+                🎁 Register now and earn <span className="text-proax-blue">{bonusPoints} {t.websiteBonus.points}</span> toward the grand prize!
               </p>
             </div>
           </div>
@@ -95,16 +99,16 @@ export const WebsiteBonusScreen: React.FC<WebsiteBonusScreenProps> = ({
         <div className="text-center mb-8">
           <Gift className="mx-auto h-16 w-16 text-proax-primary mb-4" />
           <h2 className="text-3xl md:text-4xl font-bold text-proax-navy mb-4">
-            Bonus Question!
+            {t.websiteBonus.title}
           </h2>
           <p className="text-lg text-gray-600">
-            Do you already have a Proax.ca account?
+            {t.websiteBonus.description}
           </p>
         </div>
 
         <div className="bg-proax-bg rounded-lg p-6 mb-8 text-center">
           <p className="text-xl font-semibold text-proax-primary">
-            🎁 Existing members get <span className="text-proax-blue">{bonusPoints} bonus points!</span>
+            🎁 {t.websiteBonus.question} <span className="text-proax-blue">{bonusPoints} {t.websiteBonus.points}!</span>
           </p>
         </div>
 
@@ -114,7 +118,7 @@ export const WebsiteBonusScreen: React.FC<WebsiteBonusScreenProps> = ({
             size="lg"
             className="h-16 text-xl font-semibold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition-all duration-300"
           >
-            Yes, I have an account
+            {t.websiteBonus.yes}
           </Button>
 
           <Button
@@ -123,7 +127,7 @@ export const WebsiteBonusScreen: React.FC<WebsiteBonusScreenProps> = ({
             variant="outline"
             className="h-16 text-xl font-semibold border-2 border-proax-primary text-proax-primary hover:bg-proax-primary hover:text-white transition-all duration-300"
           >
-            No, I don't have one
+            {t.websiteBonus.no}
           </Button>
         </div>
       </Card>
