@@ -1,3 +1,4 @@
+
 import { Question, LeaderboardEntry, AppConfig } from '@/types/trivia';
 
 const STORAGE_KEYS = {
@@ -10,33 +11,96 @@ const STORAGE_KEYS = {
 const defaultQuestions: Question[] = [
   {
     id: '1',
-    questionText: 'Is Proax a leading distributor of industrial products in Canada?',
-    questionType: 'yesno',
-    correctAnswer: 'Yes',
-    points: 10,
+    questionText: "What is Proax's new campaign name?",
+    questionType: 'multiple',
+    options: ['Power to the Panel', 'Industry First', 'Boots on the Ground', 'Smart Automation'],
+    correctAnswer: 'Boots on the Ground',
+    points: 20,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/boots-on-the-ground-french.png'
   },
   {
     id: '2',
     questionText: 'What year was Proax founded?',
     questionType: 'multiple',
-    options: ['1985', '1990', '1995', '2000'],
-    correctAnswer: '1990',
+    options: ['1955', '1962', '1965', '1970'],
+    correctAnswer: '1962',
     points: 15,
   },
   {
     id: '3',
-    questionText: 'Does Proax offer automation solutions?',
-    questionType: 'yesno',
-    correctAnswer: 'Yes',
+    questionText: 'What does the Remlive RL-24i device help improve?',
+    questionType: 'multiple',
+    options: ['Speed of Ethernet communication', 'Safety during lockout/tagout procedures', 'Cost of enclosure assembly', 'Humidity resistance'],
+    correctAnswer: 'Safety during lockout/tagout procedures',
     points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/remlive.png'
   },
   {
     id: '4',
-    questionText: 'Which of these is a Proax service?',
+    questionText: 'Which product category is NOT offered by Proax?',
     questionType: 'multiple',
-    options: ['Technical Support', 'Custom Engineering', 'Training Programs', 'All of the above'],
-    correctAnswer: 'All of the above',
+    options: ['Industrial Communication & Networking', 'Extrusions', 'Hydraulics', 'Machine Safety'],
+    correctAnswer: 'Hydraulics',
     points: 20,
+  },
+  {
+    id: '5',
+    questionText: 'Which of these Proax campaigns offers in-stock items shipped the same day?',
+    questionType: 'multiple',
+    options: ['Phoenix Contact Switches', 'ABB Circuit Breakers', 'SMC AC-D Series FRL', 'All of them'],
+    correctAnswer: 'All of them',
+    points: 10,
+  },
+  {
+    id: '6',
+    questionText: 'Is Proax proudly Canadian owned and operated?',
+    questionType: 'yesno',
+    correctAnswer: 'Yes',
+    points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/proudly-canadian.png'
+  },
+  {
+    id: '7',
+    questionText: 'How many locations does Proax have in Canada?',
+    questionType: 'multiple',
+    options: ['10', '11', '13', '15'],
+    correctAnswer: '13',
+    points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/locations-fr.png'
+  },
+  {
+    id: '8',
+    questionText: 'What is the official website address of Proax?',
+    questionType: 'multiple',
+    options: ['proax.com', 'proax.ca', 'shop.proax.ca', 'proaxglobal.com'],
+    correctAnswer: 'proax.ca',
+    points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/proax.png'
+  },
+  {
+    id: '9',
+    questionText: 'How many PROOF OF CONCEPT CENTERS does Proax operate?',
+    questionType: 'multiple',
+    options: ['3', '4', '6', '8'],
+    correctAnswer: '6',
+    points: 10,
+  },
+  {
+    id: '10',
+    questionText: 'How many DESIGN & BUILD SHOPS does Proax have?',
+    questionType: 'multiple',
+    options: ['2', '4', '6', '8'],
+    correctAnswer: '4',
+    points: 10,
+  },
+  {
+    id: '11',
+    questionText: "What's the next Proax solution coming really soon?",
+    questionType: 'multiple',
+    options: ['Vision inspection', 'Wireless sensors', 'Proax Conveyor solutions', 'Robotics-as-a-service'],
+    correctAnswer: 'Proax Conveyor solutions',
+    points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/conveyors.png'
   }
 ];
 
