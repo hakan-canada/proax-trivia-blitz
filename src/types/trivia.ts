@@ -58,6 +58,7 @@ export interface Translations {
     finishQuiz: string;
     backToHome: string;
     learnMore: string;
+    back: string;
   };
   userInfo: {
     title: string;

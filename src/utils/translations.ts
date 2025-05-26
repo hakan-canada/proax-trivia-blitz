@@ -1,4 +1,3 @@
-
 import { Translations } from '@/types/trivia';
 
 export const translations: Record<'en' | 'fr', Translations> = {
@@ -21,7 +20,8 @@ export const translations: Record<'en' | 'fr', Translations> = {
       nextQuestion: 'Next Question',
       finishQuiz: 'Finish Quiz',
       backToHome: 'Back to Home',
-      learnMore: 'Learn More'
+      learnMore: 'Learn More',
+      back: 'Back'
     },
     userInfo: {
       title: 'Tell us about yourself',
@@ -87,7 +87,8 @@ export const translations: Record<'en' | 'fr', Translations> = {
       nextQuestion: 'Question suivante',
       finishQuiz: 'Terminer le quiz',
       backToHome: 'Retour à l\'accueil',
-      learnMore: 'En savoir plus'
+      learnMore: 'En savoir plus',
+      back: 'Retour'
     },
     userInfo: {
       title: 'Parlez-nous de vous',
