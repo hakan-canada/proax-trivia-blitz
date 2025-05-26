@@ -33,9 +33,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Button onClick={() => onLanguageSelect('en')} size="lg" className="h-20 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg">English</Button>
           
-          <Button onClick={() => onLanguageSelect('fr')} size="lg" className="h-20 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg">
-            🇫🇷 Français
-          </Button>
+          <Button onClick={() => onLanguageSelect('fr')} size="lg" className="h-20 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105 shadow-lg">Français</Button>
         </div>
       </Card>
     </div>;
