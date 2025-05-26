@@ -35,7 +35,6 @@ const Index = () => {
     hasProaxAccount: null
   });
   const [showConfetti, setShowConfetti] = useState(false);
-  const [showEducationalSlide, setShowEducationalSlide] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -49,17 +48,6 @@ const Index = () => {
 
   const handleUserInfoSubmit = (userInfo: UserInfo) => {
     setGameState(prev => ({ ...prev, userInfo }));
-    // Check if first question has educational slide
-    if (questions.length > 0 && questions[0].imageSlideBefore) {
-      setShowEducationalSlide(true);
-      setCurrentScreen('educationalSlide');
-    } else {
-      setCurrentScreen('question');
-    }
-  };
-
-  const handleEducationalSlideComplete = () => {
-    setShowEducationalSlide(false);
     setCurrentScreen('question');
   };
 
@@ -86,18 +74,10 @@ const Index = () => {
     } else {
       // Move to next question
       const nextIndex = gameState.currentQuestionIndex + 1;
-      const nextQuestion = questions[nextIndex];
       
       setTimeout(() => {
         setGameState(prev => ({ ...prev, currentQuestionIndex: nextIndex }));
-        
-        // Check if next question has educational slide
-        if (nextQuestion.imageSlideBefore) {
-          setShowEducationalSlide(true);
-          setCurrentScreen('educationalSlide');
-        } else {
-          setCurrentScreen('question');
-        }
+        setCurrentScreen('question');
       }, 500);
     }
   };
