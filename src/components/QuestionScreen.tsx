@@ -208,8 +208,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           />
         </div>
 
-        {/* Question or Educational Slide - Only show educational slide when feedback is shown AND showEducationalSlide is true */}
-        {showFeedback && showEducationalSlide && question.imageSlideBefore ? (
+        {/* Educational Slide - Show only when feedback AND educational slide are both true */}
+        {showFeedback && showEducationalSlide && question.imageSlideBefore && (
           <div className="text-center mb-8 animate-fade-in">
             <h3 className="text-xl font-bold text-proax-navy mb-4">
               {t.common.learnMore}
@@ -225,7 +225,10 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               />
             </div>
           </div>
-        ) : (
+        )}
+
+        {/* Question Text - Only show when educational slide is NOT being displayed */}
+        {!(showFeedback && showEducationalSlide) && (
           <div className="text-center mb-8">
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-proax-navy mb-4 leading-tight px-2">
               {currentQuestionText}
@@ -233,8 +236,8 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Answer Options - Hide only when educational slide is being displayed */}
-        {!(showFeedback && showEducationalSlide) && answerOptions.length > 0 && (
+        {/* Answer Options - Only show when no feedback OR when feedback but no educational slide */}
+        {(!showFeedback || (showFeedback && !showEducationalSlide)) && answerOptions.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
             {answerOptions.map((option, index) => (
               <Button
@@ -261,7 +264,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           </div>
         )}
 
-        {/* Feedback - Only show when feedback is true but educational slide is not yet shown */}
+        {/* Feedback - Only show when feedback is true but educational slide is not shown */}
         {showFeedback && !showEducationalSlide && (
           <div className="text-center mb-8 animate-bounce-in">
             {isCorrect ? (
