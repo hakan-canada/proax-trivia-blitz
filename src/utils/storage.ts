@@ -14,9 +14,9 @@ const defaultQuestions: Question[] = [
     questionText: "What is Proax's new campaign name?",
     questionTextFr: "Quel est le nom de la nouvelle campagne de Proax?",
     questionType: 'multiple',
-    options: ['Power to the Panel', 'Industry First', 'Présent sur le Terrain', 'Smart Automation'],
+    options: ['Power to the Panel', 'Industry First', 'Boots On the Ground', 'Smart Automation'],
     optionsFr: ['Power to the Panel', 'Industry First', 'Présent sur le Terrain', 'Smart Automation'],
-    correctAnswer: 'Présent sur le Terrain',
+    correctAnswer: 'Boots On the Ground',
     correctAnswerFr: 'Présent sur le Terrain',
     points: 20,
     imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/boots-on-the-ground-french.png'
