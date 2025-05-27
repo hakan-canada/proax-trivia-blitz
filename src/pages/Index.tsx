@@ -118,10 +118,19 @@ const Index = () => {
       isComplete: true 
     }));
 
-    // Save quiz result to Supabase
+    // Save quiz result to Supabase with correct total score
     if (participantId) {
       console.log('Saving quiz result to Supabase');
-      await saveQuizResult(participantId, gameState.score, hasAccount);
+      console.log('Base score:', gameState.score);
+      console.log('Has Proax account:', hasAccount);
+      console.log('Bonus points:', config.bonusPoints);
+      
+      await saveQuizResult(
+        participantId, 
+        gameState.score, // base score from quiz
+        hasAccount,
+        config.bonusPoints // pass bonus points for calculation
+      );
     }
 
     // Stop music when moving to results

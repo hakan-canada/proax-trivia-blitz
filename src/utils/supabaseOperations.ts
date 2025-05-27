@@ -47,16 +47,29 @@ export const saveParticipant = async (userInfo: UserInfo, language: string): Pro
 
 export const saveQuizResult = async (
   participantId: string,
-  score: number,
+  baseScore: number,
   hasProaxAccount: boolean | null,
+  bonusPoints: number = 0,
   enteredGrandPrize: boolean = false
 ): Promise<boolean> => {
   try {
+    // Calculate total score including bonus points
+    const totalScore = baseScore + (hasProaxAccount ? bonusPoints : 0);
+    
+    console.log('Saving quiz result:', {
+      participantId,
+      baseScore,
+      bonusPoints,
+      totalScore,
+      hasProaxAccount,
+      enteredGrandPrize
+    });
+
     const { error } = await supabase
       .from('trivia_results')
       .insert({
         participant_id: participantId,
-        score,
+        score: totalScore, // Save the total score including bonus
         has_proax_account: hasProaxAccount,
         entered_grand_prize: enteredGrandPrize
       });
@@ -75,16 +88,20 @@ export const saveQuizResult = async (
 
 export const updateGrandPrizeEntry = async (participantId: string): Promise<boolean> => {
   try {
-    const { error } = await supabase
+    console.log('Updating grand prize entry for participant:', participantId);
+    
+    const { data, error } = await supabase
       .from('trivia_results')
       .update({ entered_grand_prize: true })
-      .eq('participant_id', participantId);
+      .eq('participant_id', participantId)
+      .select();
 
     if (error) {
       console.error('Error updating grand prize entry:', error);
       return false;
     }
 
+    console.log('Grand prize entry updated successfully:', data);
     return true;
   } catch (error) {
     console.error('Error updating grand prize entry:', error);
