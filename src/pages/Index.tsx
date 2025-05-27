@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
@@ -9,6 +8,7 @@ import { ResultsScreen } from '@/components/ResultsScreen';
 import { Confetti } from '@/components/Confetti';
 import { UserInfo, GameState, Question, AppConfig } from '@/types/trivia';
 import { getQuestions, addToLeaderboard, getConfig } from '@/utils/storage';
+import { saveParticipant, saveQuizResult, updateGrandPrizeEntry } from '@/utils/supabaseOperations';
 import { useToast } from '@/hooks/use-toast';
 import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 
@@ -24,6 +24,7 @@ const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('language');
   const [questions, setQuestionsState] = useState<Question[]>([]);
   const [config, setConfigState] = useState<AppConfig>({ bonusPoints: 25 });
+  const [participantId, setParticipantId] = useState<string | null>(null);
   const [gameState, setGameState] = useState<GameState>({
     currentQuestionIndex: 0,
     score: 0,
@@ -58,9 +59,24 @@ const Index = () => {
     setCurrentScreen('language');
   };
 
-  const handleUserInfoSubmit = (userInfo: UserInfo) => {
-    setGameState(prev => ({ ...prev, userInfo }));
-    setCurrentScreen('question');
+  const handleUserInfoSubmit = async (userInfo: UserInfo) => {
+    console.log('Saving participant to Supabase:', userInfo);
+    
+    // Save participant to Supabase
+    const participantIdResult = await saveParticipant(userInfo, gameState.language);
+    
+    if (participantIdResult) {
+      setParticipantId(participantIdResult);
+      setGameState(prev => ({ ...prev, userInfo }));
+      setCurrentScreen('question');
+      console.log('Participant saved with ID:', participantIdResult);
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to save participant information. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleQuestionAnswer = (answer: string, isCorrect: boolean) => {
@@ -95,29 +111,51 @@ const Index = () => {
     stopMusic();
   };
 
-  const handleWebsiteBonusAnswer = (hasAccount: boolean) => {
+  const handleWebsiteBonusAnswer = async (hasAccount: boolean) => {
     setGameState(prev => ({ 
       ...prev, 
       hasProaxAccount: hasAccount,
       isComplete: true 
     }));
+
+    // Save quiz result to Supabase
+    if (participantId) {
+      console.log('Saving quiz result to Supabase');
+      await saveQuizResult(participantId, gameState.score, hasAccount);
+    }
+
     // Stop music when moving to results
     stopMusic();
     setCurrentScreen('results');
   };
 
-  const handleEnterGrandPrize = () => {
-    if (gameState.userInfo) {
-      const finalScore = gameState.score + (gameState.hasProaxAccount ? config.bonusPoints : 0);
-      addToLeaderboard({
-        firstName: gameState.userInfo.firstName,
-        score: finalScore,
-        timestamp: Date.now()
-      });
-      toast({
-        title: "Entered Grand Prize Draw!",
-        description: "Good luck! Winner will be announced at the event.",
-      });
+  const handleEnterGrandPrize = async () => {
+    if (gameState.userInfo && participantId) {
+      console.log('Entering grand prize draw for participant:', participantId);
+      
+      // Update grand prize entry in Supabase
+      const success = await updateGrandPrizeEntry(participantId);
+      
+      if (success) {
+        // Also keep the local leaderboard for backwards compatibility
+        const finalScore = gameState.score + (gameState.hasProaxAccount ? config.bonusPoints : 0);
+        addToLeaderboard({
+          firstName: gameState.userInfo.firstName,
+          score: finalScore,
+          timestamp: Date.now()
+        });
+        
+        toast({
+          title: "Entered Grand Prize Draw!",
+          description: "Good luck! Winner will be announced at the event.",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to enter grand prize draw. Please try again.",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -129,6 +167,7 @@ const Index = () => {
     // Stop music when going back to home
     stopMusic();
     setCurrentScreen('language');
+    setParticipantId(null);
     setGameState({
       currentQuestionIndex: 0,
       score: 0,

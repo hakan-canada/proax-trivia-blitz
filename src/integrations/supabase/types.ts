@@ -9,7 +9,68 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      trivia_participants: {
+        Row: {
+          company_name: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          language: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          language?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          language?: string
+        }
+        Relationships: []
+      }
+      trivia_results: {
+        Row: {
+          completed_at: string
+          entered_grand_prize: boolean
+          has_proax_account: boolean | null
+          id: string
+          participant_id: string | null
+          score: number
+        }
+        Insert: {
+          completed_at?: string
+          entered_grand_prize?: boolean
+          has_proax_account?: boolean | null
+          id?: string
+          participant_id?: string | null
+          score?: number
+        }
+        Update: {
+          completed_at?: string
+          entered_grand_prize?: boolean
+          has_proax_account?: boolean | null
+          id?: string
+          participant_id?: string | null
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trivia_results_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "trivia_participants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
