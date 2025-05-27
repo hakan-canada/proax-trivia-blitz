@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Question } from '@/types/trivia';
@@ -43,12 +42,6 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       const correct = selectedAnswer === correctAnswer;
       setIsCorrect(correct);
       setShowFeedback(true);
-      
-      if (question.imageSlideBefore) {
-        setTimeout(() => {
-          setShowEducationalSlide(true);
-        }, 2000);
-      }
     }
   };
 
@@ -92,15 +85,16 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     if (correct && onShowConfetti) {
       onShowConfetti();
     }
-
-    if (question.imageSlideBefore) {
-      setTimeout(() => {
-        setShowEducationalSlide(true);
-      }, 2000);
-    }
   };
 
   const handleNextQuestion = () => {
+    // If this question has an educational slide and we haven't shown it yet
+    if (question.imageSlideBefore && !showEducationalSlide) {
+      setShowEducationalSlide(true);
+      return;
+    }
+
+    // Otherwise proceed to next question or finish quiz
     if (questionNumber === totalQuestions && onFinishQuiz) {
       onFinishQuiz();
     }
@@ -146,44 +140,46 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
           language={language}
         />
 
-        {/* Educational Slide - Show only when feedback AND educational slide are both true */}
-        {showFeedback && showEducationalSlide && question.imageSlideBefore && (
+        {/* Educational Slide - Show only when user clicked next and there's an educational slide */}
+        {showEducationalSlide && question.imageSlideBefore && (
           <EducationalSlide
             imageUrl={question.imageSlideBefore}
             language={language}
           />
         )}
 
-        {/* Question Text - Only show when educational slide is NOT being displayed */}
-        {!(showFeedback && showEducationalSlide) && (
-          <QuestionText questionText={currentQuestionText} />
+        {/* Question Content - Show when educational slide is NOT being displayed */}
+        {!showEducationalSlide && (
+          <>
+            <QuestionText questionText={currentQuestionText} />
+
+            {/* Answer Options - Only show when no feedback is displayed */}
+            {!showFeedback && (
+              <AnswerOptions
+                options={answerOptions}
+                selectedAnswer={selectedAnswer}
+                showFeedback={showFeedback}
+                isTimerActive={isTimerActive}
+                correctAnswer={correctAnswer}
+                onAnswerSelect={handleAnswerSelect}
+              />
+            )}
+
+            {/* Feedback - Show after answer is selected or time runs out */}
+            {showFeedback && (
+              <FeedbackDisplay
+                isCorrect={isCorrect}
+                timeLeft={timeLeft}
+                points={question.points}
+                correctAnswer={correctAnswer}
+                language={language}
+              />
+            )}
+          </>
         )}
 
-        {/* Answer Options - Only show when no feedback OR when feedback but no educational slide */}
-        {(!showFeedback || (showFeedback && !showEducationalSlide)) && (
-          <AnswerOptions
-            options={answerOptions}
-            selectedAnswer={selectedAnswer}
-            showFeedback={showFeedback}
-            isTimerActive={isTimerActive}
-            correctAnswer={correctAnswer}
-            onAnswerSelect={handleAnswerSelect}
-          />
-        )}
-
-        {/* Feedback - Only show when feedback is true but educational slide is not shown */}
-        {showFeedback && !showEducationalSlide && (
-          <FeedbackDisplay
-            isCorrect={isCorrect}
-            timeLeft={timeLeft}
-            points={question.points}
-            correctAnswer={correctAnswer}
-            language={language}
-          />
-        )}
-
-        {/* Next Question Button */}
-        {showFeedback && (
+        {/* Next Question Button - Show after feedback or when educational slide is shown */}
+        {(showFeedback || showEducationalSlide) && (
           <NextQuestionButton
             questionNumber={questionNumber}
             totalQuestions={totalQuestions}
