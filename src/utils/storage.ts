@@ -1,3 +1,4 @@
+
 import { Question, LeaderboardEntry, AppConfig } from '@/types/trivia';
 
 const STORAGE_KEYS = {
@@ -132,6 +133,17 @@ const defaultQuestions: Question[] = [
     correctAnswerFr: 'Solutions de convoyeurs Proax',
     points: 10,
     imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/conveyors.png'
+  },
+  {
+    id: '12',
+    questionText: 'What kind of training does Proax offer?',
+    questionTextFr: 'Quel type de formation Proax offre-t-elle?',
+    questionType: 'multiple',
+    options: ['Webinars only', 'Safety courses only', 'Customized, hands-on training in PLCs, robotics, safety & more', 'Theory-based videos'],
+    optionsFr: ['Webinaires seulement', 'Cours de sécurité seulement', 'Formation personnalisée et pratique en automates programmables, robotique, sécurité et plus', 'Vidéos théoriques'],
+    correctAnswer: 'Customized, hands-on training in PLCs, robotics, safety & more',
+    correctAnswerFr: 'Formation personnalisée et pratique en automates programmables, robotique, sécurité et plus',
+    points: 20,
   }
 ];
 
