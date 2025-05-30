@@ -47,6 +47,7 @@ const Index = () => {
   }, []);
 
   const handleLanguageSelect = (language: 'en' | 'fr') => {
+    console.log('Language selected:', language);
     setGameState(prev => ({ ...prev, language }));
     setCurrentScreen('welcome');
   };
@@ -60,7 +61,7 @@ const Index = () => {
   };
 
   const handleUserInfoSubmit = async (userInfo: UserInfo) => {
-    console.log('Saving participant to Supabase:', userInfo);
+    console.log('Saving participant to Supabase:', userInfo, 'Language:', gameState.language);
     
     // Save participant to Supabase
     const participantIdResult = await saveParticipant(userInfo, gameState.language);
@@ -69,7 +70,7 @@ const Index = () => {
       setParticipantId(participantIdResult);
       setGameState(prev => ({ ...prev, userInfo }));
       setCurrentScreen('question');
-      console.log('Participant saved with ID:', participantIdResult);
+      console.log('Participant saved with ID:', participantIdResult, 'Language:', gameState.language);
     } else {
       toast({
         title: "Error",
@@ -112,6 +113,8 @@ const Index = () => {
   };
 
   const handleWebsiteBonusAnswer = async (hasAccount: boolean) => {
+    console.log('Website bonus answer:', hasAccount, 'Language:', gameState.language);
+    
     setGameState(prev => ({ 
       ...prev, 
       hasProaxAccount: hasAccount,
@@ -124,6 +127,7 @@ const Index = () => {
       console.log('Base score:', gameState.score);
       console.log('Has Proax account:', hasAccount);
       console.log('Bonus points:', config.bonusPoints);
+      console.log('Language:', gameState.language);
       
       await saveQuizResult(
         participantId, 
@@ -173,6 +177,7 @@ const Index = () => {
   };
 
   const handleBackToHome = () => {
+    console.log('Returning to home, resetting language to default');
     // Stop music when going back to home
     stopMusic();
     setCurrentScreen('language');
@@ -184,7 +189,7 @@ const Index = () => {
       userInfo: null,
       isComplete: false,
       hasProaxAccount: null,
-      language: 'en'
+      language: 'en' // Reset to default
     });
   };
 
@@ -193,6 +198,8 @@ const Index = () => {
   };
 
   const renderCurrentScreen = () => {
+    console.log('Rendering screen:', currentScreen, 'Language:', gameState.language);
+    
     switch (currentScreen) {
       case 'language':
         return (

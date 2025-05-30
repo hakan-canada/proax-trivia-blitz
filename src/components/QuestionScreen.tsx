@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Question } from '@/types/trivia';
@@ -38,7 +39,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
   const handleTimeUp = () => {
     if (!showFeedback) {
-      const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+      const correctAnswer = getCorrectAnswerForLanguage();
       const correct = selectedAnswer === correctAnswer;
       setIsCorrect(correct);
       setShowFeedback(true);
@@ -57,26 +58,52 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
       questionNumber,
       questionId: question.id,
       questionType: question.questionType,
-      hasOptions: !!question.options,
-      optionsLength: question.options?.length,
-      hasOptionsFr: !!question.optionsFr,
-      optionsFrLength: question.optionsFr?.length,
-      language
+      language,
+      selectedLanguage: language // Force log the selected language
     });
     
     setSelectedAnswer('');
     setShowFeedback(false);
     setIsCorrect(false);
     setShowEducationalSlide(false);
-  }, [questionNumber, question.id]);
+  }, [questionNumber, question.id, language]); // Add language to dependencies
+
+  // Get correct answer consistently based on selected language
+  const getCorrectAnswerForLanguage = () => {
+    if (language === 'fr' && question.correctAnswerFr) {
+      return question.correctAnswerFr;
+    }
+    return question.correctAnswer;
+  };
+
+  // Get question text consistently based on selected language
+  const getQuestionTextForLanguage = () => {
+    if (language === 'fr' && question.questionTextFr) {
+      return question.questionTextFr;
+    }
+    return question.questionText;
+  };
+
+  // Get answer options consistently based on selected language
+  const getAnswerOptionsForLanguage = () => {
+    if (question.questionType === 'yesno') {
+      return language === 'fr' ? ['Oui', 'Non'] : ['Yes', 'No'];
+    }
+    
+    if (language === 'fr' && question.optionsFr && question.optionsFr.length > 0) {
+      return question.optionsFr;
+    }
+    
+    return question.options || [];
+  };
 
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback || !isTimerActive) return;
     
-    console.log('Answer selected:', answer);
+    console.log('Answer selected:', answer, 'Language:', language);
     
     setSelectedAnswer(answer);
-    const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
+    const correctAnswer = getCorrectAnswerForLanguage();
     const correct = answer === correctAnswer;
     setIsCorrect(correct);
     setShowFeedback(true);
@@ -101,32 +128,18 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
     onAnswer(selectedAnswer, isCorrect);
   };
 
-  const getAnswerOptions = () => {
-    if (question.questionType === 'yesno') {
-      const yesNoOptions = language === 'fr' ? ['Oui', 'Non'] : ['Yes', 'No'];
-      console.log('YesNo options:', yesNoOptions);
-      return yesNoOptions;
-    }
-    
-    const options = language === 'fr' && question.optionsFr ? question.optionsFr : (question.options || []);
-    console.log('Multiple choice options:', {
-      language,
-      hasOptionsFr: !!question.optionsFr,
-      hasOptions: !!question.options,
-      finalOptions: options
-    });
-    return options;
-  };
-
-  const currentQuestionText = language === 'fr' && question.questionTextFr ? question.questionTextFr : question.questionText;
-  const correctAnswer = language === 'fr' && question.correctAnswerFr ? question.correctAnswerFr : question.correctAnswer;
-  const answerOptions = getAnswerOptions();
+  const currentQuestionText = getQuestionTextForLanguage();
+  const correctAnswer = getCorrectAnswerForLanguage();
+  const answerOptions = getAnswerOptionsForLanguage();
 
   console.log('QuestionScreen render state:', {
     showEducationalSlide,
     showFeedback,
     answerOptionsLength: answerOptions.length,
-    questionNumber
+    questionNumber,
+    language,
+    currentQuestionText: currentQuestionText.substring(0, 50) + '...',
+    correctAnswer
   });
 
   return (
