@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
@@ -7,8 +8,8 @@ import { WebsiteBonusScreen } from '@/components/WebsiteBonusScreen';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { Confetti } from '@/components/Confetti';
 import { UserInfo, GameState, Question, AppConfig } from '@/types/trivia';
-import { getQuestions, addToLeaderboard, getConfig } from '@/utils/storage';
-import { saveParticipant, saveQuizResult, updateGrandPrizeEntry } from '@/utils/supabaseOperations';
+import { getQuestions, getConfig } from '@/utils/storage';
+import { saveParticipant, saveQuizResult } from '@/utils/supabaseOperations';
 import { useToast } from '@/hooks/use-toast';
 import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 
@@ -142,36 +143,6 @@ const Index = () => {
     setCurrentScreen('results');
   };
 
-  const handleEnterGrandPrize = async () => {
-    if (gameState.userInfo && participantId) {
-      console.log('Entering grand prize draw for participant:', participantId);
-      
-      // Update grand prize entry in Supabase
-      const success = await updateGrandPrizeEntry(participantId);
-      
-      if (success) {
-        // Also keep the local leaderboard for backwards compatibility
-        const finalScore = gameState.score + (gameState.hasProaxAccount ? config.bonusPoints : 0);
-        addToLeaderboard({
-          firstName: gameState.userInfo.firstName,
-          score: finalScore,
-          timestamp: Date.now()
-        });
-        
-        toast({
-          title: "Entered Grand Prize Draw!",
-          description: "Good luck! Winner will be announced at the event.",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Failed to enter grand prize draw. Please try again.",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
   const handleVisitWebsite = () => {
     window.open('https://proax.ca', '_blank');
   };
@@ -273,7 +244,6 @@ const Index = () => {
             hasProaxAccount={gameState.hasProaxAccount || false}
             bonusPoints={config.bonusPoints}
             language={gameState.language}
-            onEnterGrandPrize={handleEnterGrandPrize}
             onVisitWebsite={handleVisitWebsite}
             onBackToHome={handleBackToHome}
           />

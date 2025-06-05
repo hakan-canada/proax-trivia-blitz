@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { UserInfo } from '@/types/trivia';
-import { Trophy, Award, ExternalLink, Gift, Star } from 'lucide-react';
+import { Trophy, ExternalLink, Gift, Star } from 'lucide-react';
 import { translations } from '@/utils/translations';
 
 interface ResultsScreenProps {
@@ -12,7 +12,6 @@ interface ResultsScreenProps {
   hasProaxAccount: boolean;
   bonusPoints: number;
   language: 'en' | 'fr';
-  onEnterGrandPrize: () => void;
   onVisitWebsite: () => void;
   onBackToHome: () => void;
 }
@@ -23,7 +22,6 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   hasProaxAccount,
   bonusPoints,
   language,
-  onEnterGrandPrize,
   onVisitWebsite,
   onBackToHome
 }) => {
@@ -85,24 +83,12 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
 
         {/* Action Buttons */}
         <div className="space-y-4">
-          {userInfo.email && (
-            <Button
-              onClick={onEnterGrandPrize}
-              size="lg"
-              className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-orange-500 hover:to-red-500 transition-all duration-300 transform hover:scale-105"
-            >
-              <Award className="mr-3 h-6 w-6" />
-              {t.results.grandPrize}
-            </Button>
-          )}
-
           <Button
             onClick={onVisitWebsite}
             size="lg"
-            variant="outline"
-            className="w-full h-14 text-lg font-semibold border-2 border-proax-primary text-proax-primary hover:bg-proax-primary hover:text-white transition-all duration-300"
+            className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-proax-primary to-proax-blue hover:from-proax-blue hover:to-proax-primary transition-all duration-300 transform hover:scale-105"
           >
-            <ExternalLink className="mr-3 h-5 w-5" />
+            <ExternalLink className="mr-3 h-6 w-6" />
             {t.results.visitWebsite}
           </Button>
 
