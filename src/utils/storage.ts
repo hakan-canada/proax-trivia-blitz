@@ -19,7 +19,7 @@ const defaultQuestions: Question[] = [
     correctAnswer: 'Boots On the Ground',
     correctAnswerFr: 'Présent sur le Terrain',
     points: 20,
-    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/4-May-27-2025-01-02-45-2423-PM.png'
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/boots-on-the-ground-french.png'
   },
   {
     id: '2',
@@ -42,7 +42,7 @@ const defaultQuestions: Question[] = [
     correctAnswer: 'All of the above',
     correctAnswerFr: 'Tout ce qui précède',
     points: 15,
-    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/2-May-27-2025-01-02-45-1497-PM.png'
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/remlive.png'
   },
   {
     id: '4',
@@ -74,7 +74,7 @@ const defaultQuestions: Question[] = [
     correctAnswer: 'Yes',
     correctAnswerFr: 'Oui',
     points: 10,
-    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/6-2.png'
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/proudly-canadian.png'
   },
   {
     id: '7',
@@ -105,10 +105,10 @@ const defaultQuestions: Question[] = [
     questionText: 'How many PROOF OF CONCEPT CENTERS does Proax operate?',
     questionTextFr: 'Combien de centres de preuve de concept Proax exploite-t-elle?',
     questionType: 'multiple',
-    options: ['3', '4', '6', '8'],
-    optionsFr: ['3', '4', '6', '8'],
-    correctAnswer: '6',
-    correctAnswerFr: '6',
+    options: ['3', '4', '5', '6'],
+    optionsFr: ['3', '4', '5', '6'],
+    correctAnswer: '5',
+    correctAnswerFr: '5',
     points: 10,
   },
   {
