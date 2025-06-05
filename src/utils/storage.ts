@@ -1,4 +1,3 @@
-
 import { Question, LeaderboardEntry, AppConfig } from '@/types/trivia';
 
 const STORAGE_KEYS = {
@@ -110,6 +109,7 @@ const defaultQuestions: Question[] = [
     correctAnswer: '5',
     correctAnswerFr: '5',
     points: 10,
+    imageSlideBefore: 'https://3958257.fs1.hubspotusercontent-na1.net/hubfs/3958257/poc.jpg'
   },
   {
     id: '10',
